@@ -5,8 +5,13 @@
   padding: 0;
   font-family: "Roboto", sans-serif;
 }
+html, body {
+    height: 100%;
+}
 body {
     background: linear-gradient(90deg, #00c9ff 0%, #92fe9d 100%);
+    display: flex;
+    flex-direction: column;
 }
 .header {
   display: flex;
@@ -71,4 +76,14 @@ body {
     background-color: rgb(0, 193, 0);
     color: #fff;
     border-radius: 8px;
+}
+.copyright {
+    margin-top: auto;
+    padding: 15px;
+    background-color: #2b00ff;
+}
+.copyright p, .copyright a {
+    color: #fff;
+    text-decoration: none;
+    text-align: center;
 }
