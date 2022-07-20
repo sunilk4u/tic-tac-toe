@@ -11,20 +11,27 @@
     <div class="header">
         <h1 class="head">Tic - Tac - Toe</h1>
     </div>
+    <div class="result">
+        <h2 class="res-display">Let's see who is <span style="color: red;"><i>Tic - Tac - Toe</i></span> champion!</h2>
+    </div>
     <div class="play-container">
         <div class="tile-container">
-            <div class="tile-1">X</div>
-            <div class="tile-1">X</div>
-            <div class="tile-1">X</div>
-            <div class="tile-1">X</div>
-            <div class="tile-1">X</div>
-            <div class="tile-1">X</div>
-            <div class="tile-1">X</div>
-            <div class="tile-1">X</div>
-            <div class="tile-1">X</div>
+            <div class="tile tile-1"></div>
+            <div class="tile tile-2"></div>
+            <div class="tile tile-3"></div>
+            <div class="tile tile-4"></div>
+            <div class="tile tile-5"></div>
+            <div class="tile tile-6"></div>
+            <div class="tile tile-7"></div>
+            <div class="tile tile-8"></div>
+            <div class="tile tile-9"></div>
         </div>
         <div class="controls">
-            
+            <select name="player" id="player" class="player-select">
+                <option value="AI">AI</option>
+                <option value="Player 2">Player 2</option>
+            </select>
+            <button class="choose-player">Let's Play</button>
         </div>
     </div>
 </body>
