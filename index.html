@@ -12,19 +12,19 @@
         <h1 class="head">Tic - Tac - Toe</h1>
     </div>
     <div class="result">
-        <h2 class="res-display">Let's see who is <span style="color: red;"><i>Tic - Tac - Toe</i></span> champion!</h2>
+        <h2 class="res-display" id="res-display">Let's see who is <span style="color: red;"><i>Tic - Tac - Toe</i></span> champion!</h2>
     </div>
     <div class="play-container">
         <div class="tile-container">
-            <div class="tile tile-1"></div>
-            <div class="tile tile-2"></div>
-            <div class="tile tile-3"></div>
-            <div class="tile tile-4"></div>
-            <div class="tile tile-5"></div>
-            <div class="tile tile-6"></div>
-            <div class="tile tile-7"></div>
-            <div class="tile tile-8"></div>
-            <div class="tile tile-9"></div>
+            <div class="tile tile-1" data-attribute="1"></div>
+            <div class="tile tile-2" data-attribute="2"></div>
+            <div class="tile tile-3" data-attribute="3"></div>
+            <div class="tile tile-4" data-attribute="4"></div>
+            <div class="tile tile-5" data-attribute="5"></div>
+            <div class="tile tile-6" data-attribute="6"></div>
+            <div class="tile tile-7" data-attribute="7"></div>
+            <div class="tile tile-8" data-attribute="8"></div>
+            <div class="tile tile-9" data-attribute="9"></div>
         </div>
         <div class="controls">
             <select name="player" id="player" class="player-select">
@@ -35,7 +35,8 @@
                 <option value="X">X</option>
                 <option value="O">O</option>
             </select>
-            <button class="choose-player">Let's Play</button>
+            <button class="choose-player" onclick="gameFlow.startNewGame()">Start New Game</button>
+            <button class="end-game" onclick="gameFlow.endGame()">End Game</button>
         </div>
     </div>
     <footer class="copyright">

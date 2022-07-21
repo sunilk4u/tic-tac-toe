@@ -70,12 +70,15 @@ body {
     font-weight: 600;
     outline: none !important;
 }
-.choose-player {
+.choose-player, .end-game {
     padding: 8px 10px 8px 10px;
     border: none;
     background-color: rgb(0, 193, 0);
     color: #fff;
     border-radius: 8px;
+}
+.end-game {
+  background-color: red;
 }
 .copyright {
     margin-top: auto;
