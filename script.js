@@ -70,8 +70,7 @@ const gameBoard = (() => {
 
   function checkWin() {
     let X_Match = false,
-      O_Match = false,
-      draw = false;
+      O_Match = false;
     winBoard.every((match) => {
       if (
         board[match[0]] === "X" &&
