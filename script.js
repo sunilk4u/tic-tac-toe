@@ -40,6 +40,7 @@ const gameBoard = (() => {
       "Lets's Begin! Your move first.";
     addListen();
     document.querySelector(".choose-player").disabled = true;
+    document.querySelector(".end-game").disabled = false;
     document.querySelector(".choose-player").style["background-color"] =
       "#afafaf";
   }
@@ -69,7 +70,8 @@ const gameBoard = (() => {
 
   function checkWin() {
     let X_Match = false,
-      O_Match = false;
+      O_Match = false,
+      draw = false;
     winBoard.every((match) => {
       if (
         board[match[0]] === "X" &&
@@ -87,8 +89,14 @@ const gameBoard = (() => {
         O_Match = true;
         return false;
       }
+
       return true;
     });
+
+    if (!board.includes("N")) {
+      document.getElementById("res-display").innerHTML = "Its a Draw";
+      removeListen();
+    }
 
     if (X_Match === true) {
       document.getElementById("res-display").innerHTML =
@@ -130,6 +138,7 @@ const gameBoard = (() => {
     document.getElementById(
       "res-display"
     ).innerHTML = `Let's see who is <span style="color: red;"><i>Tic - Tac - Toe</i></span> champion!`;
+    document.querySelector(".end-game").disabled = true;
   }
 
   return { board, createPlayers, startGame, reset };

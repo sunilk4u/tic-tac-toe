@@ -80,6 +80,9 @@ body {
 .end-game {
   background-color: red;
 }
+.end-game:disabled {
+  background-color: #afafaf;
+}
 .copyright {
     margin-top: auto;
     padding: 15px;
