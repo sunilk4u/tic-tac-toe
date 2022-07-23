@@ -2,11 +2,12 @@ const players = (selectedPlayer, selectedSymbol, turn) => {
   let isAI = selectedPlayer;
   let symbol = selectedSymbol;
   let isTurn = turn;
-
+  let move;
   return {
     isAI,
     symbol,
     isTurn,
+    move,
   };
 };
 
@@ -23,6 +24,119 @@ const gameBoard = (() => {
     [2, 4, 6],
   ];
   let player1, player2, otherSymbol;
+
+  function AI_Plays() {
+    function isMoveLeft() {
+      if (board.includes("N")) {
+        return true;
+      }
+      return false;
+    }
+
+    function evaluate(depth) {
+      let X_Match = false,
+        O_Match = false;
+      winBoard.every((match) => {
+        if (
+          board[match[0]] === "X" &&
+          board[match[1]] === "X" &&
+          board[match[2]] === "X"
+        ) {
+          X_Match = true;
+          return false;
+        }
+        if (
+          board[match[0]] === "O" &&
+          board[match[1]] === "O" &&
+          board[match[2]] === "O"
+        ) {
+          O_Match = true;
+          return false;
+        }
+
+        return true;
+      });
+
+      if (X_Match === true) {
+        if (player1.symbol === "X") {
+          return -10;
+        } else {
+          return +10;
+        }
+      }
+      if (O_Match === true) {
+        if (player2.symbol === "O") {
+          return +10;
+        } else {
+          return -10;
+        }
+      }
+
+      return 0;
+    }
+
+    function minimax(depth, isMax) {
+      score = evaluate(depth);
+      if (score === +10) {
+        return score;
+      }
+
+      if (score === -10) {
+        return score;
+      }
+
+      if (isMoveLeft() === false) {
+        return 0;
+      }
+
+      if (isMax) {
+        best = -Infinity;
+
+        for (let i = 0; i < 9; i++) {
+          if (board[i] === "N") {
+            board[i] = player2.symbol;
+
+            best = Math.max(best, minimax(depth + 1, !isMax));
+
+            board[i] = "N";
+          }
+        }
+        return best;
+      } else {
+        best = Infinity;
+
+        for (let i = 0; i < 9; i++) {
+          if (board[i] === "N") {
+            board[i] = player1.symbol;
+
+            best = Math.min(best, minimax(depth + 1, !isMax));
+
+            board[i] = "N";
+          }
+        }
+        return best;
+      }
+    }
+
+    function findBestMove() {
+      let bestVal = -Infinity;
+      player2.move = -1;
+
+      for (let i = 0; i < 9; i++) {
+        if (board[i] === "N") {
+          board[i] = player2.symbol;
+          moveValue = minimax(0, false);
+          board[i] = "N";
+
+          if (moveValue > bestVal) {
+            bestVal = moveValue;
+            player2.move = i;
+          }
+        }
+      }
+    }
+    findBestMove();
+  }
 
   function createPlayers() {
     const selectedPlayer = document.getElementById("player").value;
@@ -47,7 +161,21 @@ const gameBoard = (() => {
 
   function nextMove(index) {
     if (player2.isAI === true) {
-      //AI work here
+      document.getElementById("res-display").innerHTML =
+        "Good Luck, Beating the AI ; )";
+      board[index - 1] = player1.symbol;
+      displayController.displayNextMove(index, player1);
+      displayController.changeTileColor(index, "#7cff7c");
+
+      try {
+        AI_Plays();
+        board[player2.move] = player2.symbol;
+        displayController.displayNextMove(player2.move + 1, player2);
+        displayController.changeTileColor(player2.move + 1, "#ff7474");
+        checkWin_player();
+      } catch (error) {
+        checkWin_player();
+      }
     } else {
       if (player1.isTurn === true) {
         board[index - 1] = player1.symbol;
@@ -64,11 +192,11 @@ const gameBoard = (() => {
         player1.isTurn = !player1.isTurn;
         player2.isTurn = !player2.isTurn;
       }
+      checkWin_player();
     }
-    checkWin();
   }
 
-  function checkWin() {
+  function checkWin_player() {
     let X_Match = false,
       O_Match = false;
     winBoard.every((match) => {
@@ -98,13 +226,31 @@ const gameBoard = (() => {
     }
 
     if (X_Match === true) {
-      document.getElementById("res-display").innerHTML =
-        "Player 1 won the match";
+      if (player1.symbol === "X") {
+        document.getElementById("res-display").innerHTML =
+          "Player 1 won the match";
+      } else {
+        if (player2.isAI === true) {
+          document.getElementById("res-display").innerHTML = "AI won the match";
+        } else {
+          document.getElementById("res-display").innerHTML =
+            "Player 2 won the match";
+        }
+      }
       removeListen();
     }
     if (O_Match === true) {
-      document.getElementById("res-display").innerHTML =
-        "Player 2 won the match";
+      if (player1.symbol === "O") {
+        document.getElementById("res-display").innerHTML =
+          "Player 1 won the match";
+      } else {
+        if (player2.isAI === true) {
+          document.getElementById("res-display").innerHTML = "AI won the match";
+        } else {
+          document.getElementById("res-display").innerHTML =
+            "Player 2 won the match";
+        }
+      }
       removeListen();
     }
   }
