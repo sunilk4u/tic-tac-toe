@@ -1,1 +1,1 @@
-# tic-tac-toe
+# Tic Tac Toe with AI using Minimax Algorithm

@@ -1,3 +1,9 @@
+/* This game is created as a learning challenge for The odin Project Full stack developemnt
+   Author: Sunil Kumar
+   Bio: https://github.com/sunilk4u/
+*/
+
+// Player factory method return object
 const players = (selectedPlayer, selectedSymbol, turn) => {
   let isAI = selectedPlayer;
   let symbol = selectedSymbol;
@@ -11,8 +17,13 @@ const players = (selectedPlayer, selectedSymbol, turn) => {
   };
 };
 
+// gameBoard contains all the logic for the game play
 const gameBoard = (() => {
+
+  // create a panel for tic tac toe with blank (N represents blank)
   let board = ["N", "N", "N", "N", "N", "N", "N", "N", "N"];
+
+  // contains all the winnning combinations
   const winBoard = [
     [0, 1, 2],
     [3, 4, 5],
@@ -23,9 +34,13 @@ const gameBoard = (() => {
     [0, 4, 8],
     [2, 4, 6],
   ];
+
   let player1, player2, otherSymbol;
 
+  // Ai_Plays contains for calculating nect move for AI
   function AI_Plays() {
+
+    // checks if there is any move left to play (Draw condition)
     function isMoveLeft() {
       if (board.includes("N")) {
         return true;
@@ -33,9 +48,12 @@ const gameBoard = (() => {
       return false;
     }
 
+    // evaluates if there is a winning condition by player or AI
     function evaluate(depth) {
       let X_Match = false,
         O_Match = false;
+
+      // match with every winning combinations
       winBoard.every((match) => {
         if (
           board[match[0]] === "X" &&
@@ -57,13 +75,16 @@ const gameBoard = (() => {
         return true;
       });
 
+      // check if X is won with respect to player and return score
       if (X_Match === true) {
         if (player1.symbol === "X") {
-          return -10;
+          return -10;           
         } else {
           return +10;
         }
       }
+
+      // check if O is won with respect to player and returns score
       if (O_Match === true) {
         if (player2.symbol === "O") {
           return +10;
@@ -72,9 +93,10 @@ const gameBoard = (() => {
         }
       }
 
-      return 0;
+      return 0;   // if no win then return 0
     }
 
+    // minimax creates every possible outcome with moves
     function minimax(depth, isMax) {
       score = evaluate(depth);
       if (score === +10) {
@@ -118,6 +140,7 @@ const gameBoard = (() => {
       }
     }
 
+    // finds the best move to take in entire board for AI to win 
     function findBestMove() {
       let bestVal = -Infinity;
       player2.move = -1;
@@ -138,6 +161,7 @@ const gameBoard = (() => {
     findBestMove();
   }
 
+  // creates players object
   function createPlayers() {
     const selectedPlayer = document.getElementById("player").value;
     const selectedSymbol = document.getElementById("symbol").value;
@@ -149,17 +173,21 @@ const gameBoard = (() => {
     player1 = players(false, selectedSymbol, true);
   }
 
+  // starts the game
   function startGame() {
     document.getElementById("res-display").innerHTML =
       "Lets's Begin! Your move first.";
-    addListen();
+    addListen();                                              // adds event listeners to each move on the board
     document.querySelector(".choose-player").disabled = true;
     document.querySelector(".end-game").disabled = false;
     document.querySelector(".choose-player").style["background-color"] =
       "#afafaf";
   }
 
+  // nextMove performs the next move operation on board
   function nextMove(index) {
+
+    // check if the player 2 is selected as AI and perform according operations
     if (player2.isAI === true) {
       document.getElementById("res-display").innerHTML =
         "Good Luck, Beating the AI ; )";
@@ -167,6 +195,7 @@ const gameBoard = (() => {
       displayController.displayNextMove(index, player1);
       displayController.changeTileColor(index, "#7cff7c");
 
+      // perform move for the AI
       try {
         AI_Plays();
         board[player2.move] = player2.symbol;
@@ -196,9 +225,12 @@ const gameBoard = (() => {
     }
   }
 
+  // checks if there is a winning player or draw
   function checkWin_player() {
     let X_Match = false,
       O_Match = false;
+    
+    // check winning matches combination on board
     winBoard.every((match) => {
       if (
         board[match[0]] === "X" &&
@@ -220,25 +252,28 @@ const gameBoard = (() => {
       return true;
     });
 
+    // check if it is a draw
     if (!board.includes("N")) {
       document.getElementById("res-display").innerHTML = "Its a Draw";
       removeListen();
     }
 
+    // check if X won
     if (X_Match === true) {
-      if (player1.symbol === "X") {
+      if (player1.symbol === "X") {                           
         document.getElementById("res-display").innerHTML =
           "Player 1 won the match";
       } else {
-        if (player2.isAI === true) {
+        if (player2.isAI === true) {  
           document.getElementById("res-display").innerHTML = "AI won the match";
         } else {
           document.getElementById("res-display").innerHTML =
             "Player 2 won the match";
         }
       }
-      removeListen();
+      removeListen();     // remove the event listener from the moves on the board
     }
+    // check if O has won
     if (O_Match === true) {
       if (player1.symbol === "O") {
         document.getElementById("res-display").innerHTML =
@@ -251,15 +286,17 @@ const gameBoard = (() => {
             "Player 2 won the match";
         }
       }
-      removeListen();
+      removeListen();      // remove the event listener from the moves on the board
     }
   }
 
+  // calls nextMove function with data-attribute
   const eventFunc = function () {
     const divNum = this.getAttribute("data-attribute");
     nextMove(divNum);
   };
 
+  // adds event listener to the divs tile class
   function addListen() {
     const tileElements = Array.from(document.getElementsByClassName("tile"));
     tileElements.forEach((tile) => {
@@ -267,13 +304,15 @@ const gameBoard = (() => {
     });
   }
 
+  // removes event listener to the divs tile class
   function removeListen() {
     const tileElements = Array.from(document.getElementsByClassName("tile"));
     tileElements.forEach((tile) => {
       tile.removeEventListener("click", eventFunc, { once: true });
     });
   }
-
+  
+  // resets the game and the board
   function reset() {
     removeListen();
     board = ["N", "N", "N", "N", "N", "N", "N", "N", "N"];
@@ -289,7 +328,10 @@ const gameBoard = (() => {
   return { board, createPlayers, startGame, reset };
 })();
 
+// displayController controls the setup and display of tiles
 const displayController = (() => {
+
+  // sets up tiles for the new game
   function setupTiles() {
     const tiles = document.getElementsByClassName("tile");
     Array.from(tiles).forEach((tile) => {
@@ -298,11 +340,13 @@ const displayController = (() => {
     });
   }
 
+  // displays next move on the div tiles
   function displayNextMove(index, player) {
     const tileDiv = document.querySelector('[data-attribute="' + index + '"]');
     tileDiv.textContent = player.symbol;
   }
 
+  // changes tile color on the divs
   function changeTileColor(index, color) {
     const tileDiv = document.querySelector('[data-attribute="' + index + '"]');
     tileDiv.style["background-color"] = color;
@@ -315,13 +359,17 @@ const displayController = (() => {
   };
 })();
 
+// gameFlow function handles the flow of game
 const gameFlow = (() => {
+
+  // start a new game fresh
   function startNewGame() {
     displayController.setupTiles();
     gameBoard.createPlayers();
     gameBoard.startGame();
   }
 
+  // end the game and reset everything
   function endGame() {
     displayController.setupTiles();
     gameBoard.reset();
